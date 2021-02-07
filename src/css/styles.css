@@ -1,0 +1,40 @@
+html{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+h1{
+    padding:1rem 0;
+}
+.container{
+    max-width:50%;
+    margin:0 auto;
+}
+form{
+    display:flex;
+    flex-wrap: wrap;
+}
+label{
+    flex-basis: 100%;
+    margin-bottom:0.5rem;
+}
+input{
+    margin-right:1rem;
+}
+.display p{
+    color:red;
+}
+.display div{
+    border:1px solid black;
+    border-radius:10px;
+    margin-bottom:0.5rem;
+    padding:0.5rem;
+    text-align: center;
+}
+ul{
+    padding-left:0;
+}
+
+li{
+    list-style: none;
+    padding:0.5rem 0;
+}
