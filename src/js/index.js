@@ -1,25 +1,20 @@
-//import results from './views/results-view.js';
-//import getData from './models/stock-data.js';
+window.addEventListener('load', function(e){
 
-//CONTROLLER -- event listeners
 const searchForm = document.querySelector('.searchform');
 const error = document.querySelector('.error');
 
 searchForm.addEventListener('submit', function(e){
     e.preventDefault();
     const searchTerm = e.currentTarget.elements['searchTerm'].value;
-    console.log(searchTerm)
-    let store=[]
 
-    //MODEL
 const apiURL = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol='+ searchTerm + '&apikey=U7WRYXUILFNS25KA'
 
-//getting stock data from URL
+//fetching data from URL
 async function getData(){
      const response = await fetch (apiURL);
      const data = await response.json();
 
-     //CONTROLLER?
+//creating variables for specific data to view
      var symbol = data["Global Quote"]["01. symbol"];
      var date = data["Global Quote"]["07. latest trading day"];
      var price = data["Global Quote"]["05. price"];
@@ -35,21 +30,19 @@ async function getData(){
          lowest,
          changePercent
      }
-     store = allData;
-     console.log(store)
 
      function addData(allData){
         const dataDisplay = document.querySelector('.display')
-        
+        //creating a template literal
         const template = `
         <div>
             <h3 id="symbol">Stock Symbol:${symbol}</h3>
             <ul>
-                <li>Date:<span id="date">${date}</span></li>
-                <li>Price:<span id="price">${price}</span></li>
-                <li>High:<span id="high">${highest}</span></li>
-                <li>Low:<span id="low">${lowest}</span></li>
-                <li>Change Percent:<span id="change">${changePercent}</span></li>
+                <li><b>Date: </b><span id="date">${date}</span></li>
+                <li><b>Price: </b>$<span id="price">${price}</span></li>
+                <li><b>High: </b>$<span id="high">${highest}</span></li>
+                <li><b>Low: </b>$<span id="low">${lowest}</span></li>
+                <li><b>Change Percent: </b><span id="change">${changePercent}</span></li>
             </ul>
         </div>
         `
@@ -60,7 +53,7 @@ async function getData(){
         //adding data into the DOM
         dataDisplay.appendChild(addData)
 
-        //validation
+        //error validation
         if (symbol === undefined){
             error.innerHTML = "Enter a valid symbol"
             dataDisplay.removeChild(addData)
@@ -72,6 +65,8 @@ async function getData(){
 
  }
   return getData();
+
+})
 
 })
 

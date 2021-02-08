@@ -918,87 +918,82 @@ var _asyncToGenerator2 = _interopRequireDefault(require("@babel/runtime/helpers/
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import results from './views/results-view.js';
-//import getData from './models/stock-data.js';
-//CONTROLLER -- event listeners
-var searchForm = document.querySelector('.searchform');
-var error = document.querySelector('.error');
-searchForm.addEventListener('submit', function (e) {
-  e.preventDefault();
-  var searchTerm = e.currentTarget.elements['searchTerm'].value;
-  console.log(searchTerm);
-  var store = []; //MODEL
+window.addEventListener('load', function (e) {
+  var searchForm = document.querySelector('.searchform');
+  var error = document.querySelector('.error');
+  searchForm.addEventListener('submit', function (e) {
+    e.preventDefault();
+    var searchTerm = e.currentTarget.elements['searchTerm'].value;
+    var apiURL = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' + searchTerm + '&apikey=U7WRYXUILFNS25KA'; //fetching data from URL
 
-  var apiURL = 'https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=' + searchTerm + '&apikey=U7WRYXUILFNS25KA'; //getting stock data from URL
+    function getData() {
+      return _getData.apply(this, arguments);
+    }
 
-  function getData() {
-    return _getData.apply(this, arguments);
-  }
+    function _getData() {
+      _getData = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
+        var response, data, symbol, date, price, highest, lowest, changePercent, allData, addData;
+        return _regenerator.default.wrap(function _callee$(_context) {
+          while (1) {
+            switch (_context.prev = _context.next) {
+              case 0:
+                addData = function _addData(allData) {
+                  var dataDisplay = document.querySelector('.display'); //creating a template literal
 
-  function _getData() {
-    _getData = (0, _asyncToGenerator2.default)( /*#__PURE__*/_regenerator.default.mark(function _callee() {
-      var response, data, symbol, date, price, highest, lowest, changePercent, allData, addData;
-      return _regenerator.default.wrap(function _callee$(_context) {
-        while (1) {
-          switch (_context.prev = _context.next) {
-            case 0:
-              addData = function _addData(allData) {
-                var dataDisplay = document.querySelector('.display');
-                var template = "\n        <div>\n            <h3 id=\"symbol\">Stock Symbol:".concat(symbol, "</h3>\n            <ul>\n                <li>Date:<span id=\"date\">").concat(date, "</span></li>\n                <li>Price:<span id=\"price\">").concat(price, "</span></li>\n                <li>High:<span id=\"high\">").concat(highest, "</span></li>\n                <li>Low:<span id=\"low\">").concat(lowest, "</span></li>\n                <li>Change Percent:<span id=\"change\">").concat(changePercent, "</span></li>\n            </ul>\n        </div>\n        "); //creating a document fragment
+                  var template = "\n        <div>\n            <h3 id=\"symbol\">Stock Symbol:".concat(symbol, "</h3>\n            <ul>\n                <li><b>Date: </b><span id=\"date\">").concat(date, "</span></li>\n                <li><b>Price: </b>$<span id=\"price\">").concat(price, "</span></li>\n                <li><b>High: </b>$<span id=\"high\">").concat(highest, "</span></li>\n                <li><b>Low: </b>$<span id=\"low\">").concat(lowest, "</span></li>\n                <li><b>Change Percent: </b><span id=\"change\">").concat(changePercent, "</span></li>\n            </ul>\n        </div>\n        "); //creating a document fragment
 
-                var dataFragment = document.createRange().createContextualFragment(template);
-                var addData = dataFragment.querySelector('div'); //adding data into the DOM
+                  var dataFragment = document.createRange().createContextualFragment(template);
+                  var addData = dataFragment.querySelector('div'); //adding data into the DOM
 
-                dataDisplay.appendChild(addData); //validation
+                  dataDisplay.appendChild(addData); //error validation
 
-                if (symbol === undefined) {
-                  error.innerHTML = "Enter a valid symbol";
-                  dataDisplay.removeChild(addData);
-                } else {
-                  error.innerHTML = "";
-                }
-              };
+                  if (symbol === undefined) {
+                    error.innerHTML = "Enter a valid symbol";
+                    dataDisplay.removeChild(addData);
+                  } else {
+                    error.innerHTML = "";
+                  }
+                };
 
-              _context.next = 3;
-              return fetch(apiURL);
+                _context.next = 3;
+                return fetch(apiURL);
 
-            case 3:
-              response = _context.sent;
-              _context.next = 6;
-              return response.json();
+              case 3:
+                response = _context.sent;
+                _context.next = 6;
+                return response.json();
 
-            case 6:
-              data = _context.sent;
-              //CONTROLLER?
-              symbol = data["Global Quote"]["01. symbol"];
-              date = data["Global Quote"]["07. latest trading day"];
-              price = data["Global Quote"]["05. price"];
-              highest = data["Global Quote"]["03. high"];
-              lowest = data["Global Quote"]["04. low"];
-              changePercent = data["Global Quote"]["10. change percent"];
-              allData = {
-                symbol: symbol,
-                date: date,
-                price: price,
-                highest: highest,
-                lowest: lowest,
-                changePercent: changePercent
-              };
-              store = allData;
-              console.log(store);
-              return _context.abrupt("return", addData());
+              case 6:
+                data = _context.sent;
+                //creating variables for specific data to view
+                symbol = data["Global Quote"]["01. symbol"];
+                date = data["Global Quote"]["07. latest trading day"];
+                price = data["Global Quote"]["05. price"];
+                highest = data["Global Quote"]["03. high"];
+                lowest = data["Global Quote"]["04. low"];
+                changePercent = data["Global Quote"]["10. change percent"];
+                allData = {
+                  symbol: symbol,
+                  date: date,
+                  price: price,
+                  highest: highest,
+                  lowest: lowest,
+                  changePercent: changePercent
+                };
+                return _context.abrupt("return", addData());
 
-            case 17:
-            case "end":
-              return _context.stop();
+              case 15:
+              case "end":
+                return _context.stop();
+            }
           }
-        }
-      }, _callee);
-    }));
-    return _getData.apply(this, arguments);
-  }
+        }, _callee);
+      }));
+      return _getData.apply(this, arguments);
+    }
 
-  return getData();
+    return getData();
+  });
 });
 },{"@babel/runtime/regenerator":"../node_modules/@babel/runtime/regenerator/index.js","@babel/runtime/helpers/asyncToGenerator":"../node_modules/@babel/runtime/helpers/asyncToGenerator.js"}],"../node_modules/parcel/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
@@ -1028,7 +1023,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "55326" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "58267" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
